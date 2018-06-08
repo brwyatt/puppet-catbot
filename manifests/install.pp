@@ -8,6 +8,7 @@ class catbot::install (
   String $home = '/opt/catbot',
   String $git_deploy_key,
   String $git_repo = 'git@github.com:brwyatt/catbot.git',
+  String $git_branch = 'master',
 ){
   include ::git
   include ::python
@@ -60,5 +61,13 @@ class catbot::install (
     cwd     => $home,
     user    => 'catbot',
     require => [Class['git'], File[$ssh_key], File[$ssh_known_hosts]],
+  }
+
+  exec { 'Update catbot repo':
+    command => "bash -c 'git clean -dfx && git checkout \"${git_branch}\" && git reset --hard \"origin/${git_branch}\" && git clean -dfx'",
+    unless  => "bash -c 'git fetch && git status | grep \"On branch ${git_branch}\" && git status | grep \"Your branch is up-to-date with \"'",
+    cwd     => "${home}/catbot",
+    user    => 'catbot',
+    require => Exec['Clone catbot repo'],
   }
 }
