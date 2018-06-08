@@ -1,20 +1,20 @@
 [bot]
-nick = <%= $nick %>
-username = <%= $username %>
+nick = <%= $catbot::config::nick %>
+username = <%= $catbot::config::username %>
 
-host = <%= $irc_host %>
-port = <%= $irc_port %>
+host = <%= $catbot::config::irc_host %>
+port = <%= $catbot::config::irc_port %>
 
-ssl = <%= $ssl %>
-ssl_verify = <%= $ssl_verify %>
+ssl = <%= $catbot::config::ssl %>
+ssl_verify = <%= $catbot::config::ssl_verify %>
 
 includes =
-<% $plugins.each |$plugin| { -%>
+<% $catbot::config::plugins.each |$plugin| { -%>
     <%= $plugin %>
 <% } -%>
 
 autojoins =
-<% $autojoins.each |$channel| { -%>
+<% $catbot::config::autojoins.each |$channel| { -%>
     <%= regsubst($channel, '^#', '${#}') %>
 <% } -%>
 
@@ -26,5 +26,5 @@ guard = irc3.plugins.command.mask_based_policy
 * = view
 
 [catbot.plugins.nickserv]
-password = <%= $nickserv_password %>
-mask = <%= $nickserv_mask %>
+password = <%= $catbot::config::nickserv_password %>
+mask = <%= $catbot::config::nickserv_mask %>
