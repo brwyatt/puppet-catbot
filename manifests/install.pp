@@ -71,10 +71,18 @@ class catbot::install (
     require => Exec['Clone catbot repo'],
   }
 
+  python::pyvenv { "${home}/env":
+    ensure  => present,
+    version => '3.5',
+    owner   => 'catbot',
+  }
+
+
   python::pip { 'catbot':
-    ensure    => latest,
-    pkgname   => 'catbot',
-    url       => "${home}/catbot",
-    subscribe => Exec['Update catbot repo'],
+    ensure     => latest,
+    pkgname    => 'catbot',
+    url        => "${home}/catbot",
+    virtualenv => "${home}/env",
+    subscribe  => Exec['Update catbot repo'],
   }
 }
