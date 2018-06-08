@@ -18,6 +18,7 @@ class catbot::config (
   Array[String] $autojoins = [],
   String $nickserv_mask = 'NickServ!NickServ@services.*',
   String $config_file = "${catbot::install::home}/catbot.ini",
+  Array[String] $permissions = ['* = view'],
 ){
   file { $config_file:
     ensure  => file,

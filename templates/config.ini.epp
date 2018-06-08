@@ -26,7 +26,9 @@ cmd = !
 guard = irc3.plugins.command.mask_based_policy
 
 [irc3.plugins.command.masks]
-* = view
+<% $catbot::config::permissions.each |$permission| { -%>
+<%= $permission %>
+<% } -%>
 
 [catbot.plugins.nickserv]
 password = <%= $catbot::config::nickserv_password %>
