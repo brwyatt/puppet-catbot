@@ -5,8 +5,8 @@
 # @example
 #   include catbot::install
 class catbot::install (
-  String $home = '/opt/catbot',
   String $git_deploy_key,
+  String $home = '/opt/catbot',
   String $git_repo = 'git@github.com:brwyatt/catbot.git',
   String $git_branch = 'master',
 ){
@@ -54,7 +54,9 @@ class catbot::install (
 
   file_line { 'github_host_key':
     path => $ssh_known_hosts,
+    # lint:ignore:80chars lint:ignore:140chars
     line => 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==',
+    # lint:endignore
   }
 
   exec { 'Clone catbot repo':
@@ -66,8 +68,10 @@ class catbot::install (
   }
 
   exec { 'Update catbot repo':
+    # lint:ignore:80chars lint:ignore:140chars
     command => "bash -c 'git clean -dfx && git checkout \"${git_branch}\" && git reset --hard \"origin/${git_branch}\" && git clean -dfx'",
     unless  => "bash -c 'git fetch && git status | grep \"On branch ${git_branch}\" && git status | grep \"Your branch is up-to-date with \"'",
+    # lint:endignore
     cwd     => "${home}/catbot",
     user    => 'catbot',
     require => Exec['Clone catbot repo'],
