@@ -88,6 +88,7 @@ class catbot::install (
   python::pip { 'catbot':
     ensure     => latest,
     pkgname    => 'catbot',
+    owner      => 'catbot',
     url        => "${home}/catbot",
     virtualenv => $venv_dir,
     require    => Python::Pyvenv[$venv_dir],
