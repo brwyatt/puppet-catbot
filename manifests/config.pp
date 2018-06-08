@@ -11,7 +11,8 @@ class catbot::config (
   String $username = 'CatBot',
   String $nick = 'CatBot',
   Enum['true', 'false'] $ssl = 'false', # lint:ignore:quoted_booleans
-  Enum['CERT_NONE', 'CERT_REQUIRED', 'CERT_OPTIONAL'] $ssl_verify = 'CERT_REQUIRED',
+  Enum['CERT_NONE', 'CERT_REQUIRED', 'CERT_OPTIONAL']
+    $ssl_verify = 'CERT_REQUIRED',
   Array[String] $plugins = [],
   Array[String] $autojoins = [],
   String $nickserv_mask = 'NickServ!NickServ@services.*',
