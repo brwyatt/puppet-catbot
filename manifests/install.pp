@@ -31,6 +31,8 @@ class catbot::install (
   $ssh_key = "${ssh_dir}/id_rsa"
   $ssh_known_hosts = "${ssh_dir}/known_hosts"
 
+  $venv_dir = "${home}/env"
+
   file { $ssh_dir:
     ensure => directory,
     owner  => 'catbot',
@@ -71,18 +73,24 @@ class catbot::install (
     require => Exec['Clone catbot repo'],
   }
 
-  python::pyvenv { "${home}/env":
+  package { 'python3.5-venv':
+    ensure  => installed,
+    require => Class['python'],
+  }
+
+  python::pyvenv { $venv_dir:
     ensure  => present,
     version => '3.5',
     owner   => 'catbot',
+    require => Package['python3.5-venv'],
   }
-
 
   python::pip { 'catbot':
     ensure     => latest,
     pkgname    => 'catbot',
     url        => "${home}/catbot",
-    virtualenv => "${home}/env",
+    virtualenv => $venv_dir,
+    require    => Python::Pyvenv[$venv_dir],
     subscribe  => Exec['Update catbot repo'],
   }
 }
