@@ -10,6 +10,7 @@ class catbot::install (
   String $git_repo = 'git@github.com:brwyatt/catbot.git',
   String $git_branch = 'master',
 ){
+  include ::apt
   include ::git
   include ::python
 
@@ -79,14 +80,14 @@ class catbot::install (
 
   package { 'python3.5-venv':
     ensure  => installed,
-    require => Class['python'],
+    require => [Exec['apt_update'], Class['python']],
   }
 
   python::pyvenv { $venv_dir:
     ensure  => present,
     version => '3.5',
     owner   => 'catbot',
-    require => Package['python3.5-venv'],
+    require => [Exec['apt_update'], Package['python3.5-venv']],
   }
 
   exec { 'Install Catbot':
@@ -97,4 +98,6 @@ class catbot::install (
     subscribe   => [Exec['Clone catbot repo'], Exec['Update catbot repo'],
                     Python::Pyvenv[$venv_dir]],
   }
+
+  Exec['apt_update'] -> Class['python']
 }
