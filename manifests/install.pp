@@ -70,4 +70,11 @@ class catbot::install (
     user    => 'catbot',
     require => Exec['Clone catbot repo'],
   }
+
+  python::pip { 'catbot':
+    ensure    => latest,
+    pkgname   => 'catbot',
+    url       => "${home}/catbot",
+    subscribe => Exec['Update catbot repo'],
+  }
 }
