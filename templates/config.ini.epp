@@ -1,14 +1,3 @@
-<%- | String $irc_host,
-      Variant[String, Integer] $irc_port,
-      String $nickserv_password,
-      String $username,
-      String $nick,
-      Enum['true', 'false'] $ssl,
-      Enum['CERT_NONE', 'CERT_REQUIRED', 'CERT_OPTIONAL'] $ssl_verify,
-      Array[String] $plugins,
-      Array[String] $autojoins,
-      String $nickserv_mask,
-| -%>
 [bot]
 nick = <%= $nick %>
 username = <%= $username %>
