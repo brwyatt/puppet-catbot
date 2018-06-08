@@ -70,7 +70,7 @@ class catbot::config (
     ensure  => present,
     section => 'bot',
     setting => 'includes',
-    value   => join($plugins, "\n    "),
+    value   => join(concat([''], $plugins), "\n    "),
     path    => $config_file,
   }
   ini_setting { 'bot - autojoins':
@@ -78,7 +78,7 @@ class catbot::config (
     section => 'bot',
     setting => 'autojoins',
     # lint:ignore:single_quote_string_with_variables
-    value   => join(prefix($autojoins, '${#}'), "\n    "),
+    value   => join(concat([''], prefix($autojoins, '${#}')), "\n    "),
     # lint:endignore
     path    => $config_file,
   }
