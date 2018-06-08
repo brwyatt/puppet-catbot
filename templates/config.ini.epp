@@ -1,6 +1,9 @@
 [bot]
 nick = <%= $catbot::config::nick %>
 username = <%= $catbot::config::username %>
+<% if $catbot::config::realname { -%>
+realname = <%= $catbot::config::realname %>
+<% } -%>
 
 host = <%= $catbot::config::irc_host %>
 port = <%= $catbot::config::irc_port %>

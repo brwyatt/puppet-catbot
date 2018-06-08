@@ -8,8 +8,9 @@ class catbot::config (
   String $irc_host,
   Variant[String, Integer] $irc_port,
   String $nickserv_password,
-  String $username = 'CatBot',
   String $nick = 'CatBot',
+  String $username = 'CatBot',
+  Optional[String] $realname = undef,
   Enum['true', 'false'] $ssl = 'false', # lint:ignore:quoted_booleans
   Enum['CERT_NONE', 'CERT_REQUIRED', 'CERT_OPTIONAL']
     $ssl_verify = 'CERT_REQUIRED',
