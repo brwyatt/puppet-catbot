@@ -26,17 +26,32 @@ class catbot::install (
     shell          => '/bin/false',
   }
 
-  file { "${home}/.ssh":
+  $ssh_dir = "${home}/.ssh"
+  $ssh_key = "${ssh_dir}/id_rsa"
+  $ssh_known_hosts = "${ssh_dir}/known_hosts"
+
+  file { $ssh_dir:
     ensure => directory,
     owner  => 'catbot',
     mode   => '0775',
   }
 
-  file { "${home}/.ssh/id_rsa":
+  file { $ssh_key:
     ensure  => file,
     owner   => 'catbot',
-    mode    => '0400',
+    mode    => '0600',
     content => $git_deploy_key,
+  }
+
+  file { $ssh_known_hosts:
+    ensure => file,
+    owner  => 'catbot',
+    mode   => '0600',
+  }
+
+  file_line { 'github_host_key':
+    path => $ssh_known_hosts,
+    line => 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==',
   }
 
   exec { 'Clone catbot repo':
@@ -44,6 +59,6 @@ class catbot::install (
     unless  => '[ -d catbot/.git ]',
     cwd     => $home,
     user    => 'catbot',
-    require => [Class['git'], File["${home}/.ssh/id_rsa"]],
+    require => [Class['git'], File[$ssh_key], File[$ssh_known_hosts]],
   }
 }
