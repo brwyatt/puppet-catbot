@@ -89,13 +89,12 @@ class catbot::install (
     require => Package['python3.5-venv'],
   }
 
-  python::pip { 'catbot':
-    ensure     => latest,
-    pkgname    => 'catbot',
-    owner      => 'catbot',
-    url        => "${home}/catbot",
-    virtualenv => $venv_dir,
-    require    => Python::Pyvenv[$venv_dir],
-    subscribe  => Exec['Update catbot repo'],
+  exec { 'Install Catbot':
+    command     => "bash -c 'source ${venv_dir}/bin/activate; pip install \"${home}/catbot\" --upgrade'",
+    cwd         => $home,
+    refreshonly => true,
+    user        => 'catbot',
+    subscribe   => [Exec['Clone catbot repo'], Exec['Update catbot repo'],
+                    Python::Pyvenv[$venv_dir]],
   }
 }
