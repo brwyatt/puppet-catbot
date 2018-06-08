@@ -83,5 +83,46 @@ class catbot::config (
     path    => $config_file,
   }
 
+  # irc3.plugins.command
+  ini_setting { 'command - cmd':
+    ensure  => present,
+    section => 'irc3.plugins.command',
+    setting => 'cmd',
+    value   => '!',
+    path    => $config_file,
+  }
+  ini_setting { 'command - guard':
+    ensure  => present,
+    section => 'irc3.plugins.command',
+    setting => 'guard',
+    value   => 'irc3.plugins.command.mask_based_policy',
+    path    => $config_file,
+  }
+
+  # irc3.plugins.command.masks
+  ini_setting { 'command masks - *':
+    ensure  => present,
+    section => 'irc3.plugins.command.masks',
+    setting => '*',
+    value   => 'view',
+    path    => $config_file,
+  }
+
+  # catbot.plugins.nickserv
+  ini_setting { 'nickserv - password':
+    ensure  => present,
+    section => 'catbot.plugins.nickserv',
+    setting => 'password',
+    value   => $nickserv_password,
+    path    => $config_file,
+  }
+  ini_setting { 'nickserv - mask':
+    ensure  => present,
+    section => 'catbot.plugins.nickserv',
+    setting => 'mask',
+    value   => $nickserv_mask,
+    path    => $config_file,
+  }
+
   File[$config_file] -> Ini_setting <| path == $config_file |>
 }
