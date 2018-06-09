@@ -5,4 +5,10 @@
 # @example
 #   include catbot::service
 class catbot::service {
+  ::systemd::unit_file { 'catbot.service':
+    content => epp('catbot/catbot.service.epp'),
+  } ~>
+  service { 'catbot':
+    ensure => running,
+  }
 }

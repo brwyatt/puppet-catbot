@@ -1,0 +1,13 @@
+[Unit]
+Description=CatBot IRC Bot
+After=network.target
+
+[Service]
+Type=simple
+User=catbot
+WorkingDirectory=<%= $catbot::install::home %>
+ExecStart=<%= $catbot::install::home %>/env/bin/catbot "<%= $catbot::config::config_file %>"
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
