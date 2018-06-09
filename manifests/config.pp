@@ -20,8 +20,9 @@ class catbot::config (
   String $config_file = "${catbot::install::home}/catbot.ini",
   Array[String] $permissions = ['* = view'],
 ){
-  file { $config_file:
+  file { 'Catbot config':
     ensure  => file,
+    path    => $config_file,
     owner   => 'catbot',
     mode    => '0770',
     content => epp('catbot/config.ini'),
