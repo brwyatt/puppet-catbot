@@ -20,6 +20,10 @@ class catbot::config (
   Array[String] $permissions = ['* = view'],
   Boolean $debug = False,
   Boolean $verbose = False,
+  Optional[String] $aws_access_key_id = undef,
+  Optional[String] $aws_secret_access_key = undef,
+  String $aws_region = 'us-west-2',
+  String $dynamo_table_prefix = 'CatBot_',
   String $config_file = "${catbot::install::home}/catbot.ini",
 ){
   file { 'Catbot config':

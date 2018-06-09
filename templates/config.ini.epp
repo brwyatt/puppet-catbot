@@ -33,3 +33,13 @@ guard = irc3.plugins.command.mask_based_policy
 [catbot.plugins.nickserv]
 password = <%= $catbot::config::nickserv_password %>
 mask = <%= $catbot::config::nickserv_mask %>
+
+[boto]
+region = <%= $catbot::config::aws_region %>
+<% if $catbot::config::aws_access_key_id { -%>
+aws_access_key_id = <%= $catbot::config::aws_access_key_id %>
+<% } -%>
+<% if $catbot::config::aws_secret_access_key { -%>
+aws_secret_access_key = <%= $catbot::config::aws_secret_access_key %>
+<% } -%>
+dynamo_table_prefix = <%= $catbot::config::dynamo_table_prefix %>
