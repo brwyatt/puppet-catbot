@@ -10,6 +10,14 @@ port = <%= $catbot::config::irc_port %>
 
 ssl = <%= $catbot::config::ssl %>
 ssl_verify = <%= $catbot::config::ssl_verify %>
+<% if $catbot::config::debug { -%>
+
+debug = true
+<% } -%>
+<% if $catbot::config::verbose { -%>
+
+verbose = true
+<% } -%>
 
 includes =
 <% $catbot::config::plugins.each |$plugin| { -%>
