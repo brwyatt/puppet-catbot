@@ -18,6 +18,7 @@ class catbot::config (
   Array[String] $autojoins = [],
   String $nickserv_mask = 'NickServ!NickServ@services.*',
   Array[String] $permissions = ['* = view'],
+  Array[String] $user_prefs_defaults = [],
   Boolean $debug = False,
   Boolean $verbose = False,
   Optional[String] $aws_access_key_id = undef,
