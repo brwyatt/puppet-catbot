@@ -34,6 +34,11 @@ guard = irc3.plugins.command.mask_based_policy
 password = <%= $catbot::config::nickserv_password %>
 mask = <%= $catbot::config::nickserv_mask %>
 
+[catbot.plugins.admin_prefs.defaults]
+<% $catbot::config::admin_prefs_defaults.each |$default| { -%>
+<%= $default %>
+<% } -%>
+
 [catbot.plugins.user_prefs.defaults]
 <% $catbot::config::user_prefs_defaults.each |$default| { -%>
 <%= $default %>
