@@ -52,4 +52,4 @@ aws_access_key_id = <%= $catbot::config::aws_access_key_id %>
 <% if $catbot::config::aws_secret_access_key { -%>
 aws_secret_access_key = <%= $catbot::config::aws_secret_access_key %>
 <% } -%>
-dynamo_table_prefix = <%= $catbot::config::dynamo_table_prefix %>
+dynamo_table = <%= $catbot::config::dynamo_table %>
