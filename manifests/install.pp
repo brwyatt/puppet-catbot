@@ -5,10 +5,10 @@
 # @example
 #   include catbot::install
 class catbot::install (
-  String $git_deploy_key,
   String $home = '/opt/catbot',
   String $git_repo = 'git@github.com:brwyatt/catbot.git',
   String $git_branch = 'master',
+  Optional[String] $git_deploy_key = undef,
 ){
   include ::apt
   include ::git
@@ -29,7 +29,6 @@ class catbot::install (
   }
 
   $ssh_dir = "${home}/.ssh"
-  $ssh_key = "${ssh_dir}/id_rsa"
   $ssh_known_hosts = "${ssh_dir}/known_hosts"
 
   $venv_dir = "${home}/env"
@@ -40,11 +39,16 @@ class catbot::install (
     mode   => '0775',
   }
 
-  file { $ssh_key:
-    ensure  => file,
-    owner   => 'catbot',
-    mode    => '0600',
-    content => $git_deploy_key,
+  if $git_deploy_key{
+    $ssh_key = "${ssh_dir}/id_rsa"
+
+    file { $ssh_key:
+      ensure  => file,
+      owner   => 'catbot',
+      mode    => '0600',
+      content => $git_deploy_key,
+      before  => Exec['Clone catbot repo'],
+    }
   }
 
   file { $ssh_known_hosts:
@@ -65,7 +69,7 @@ class catbot::install (
     unless  => '[ -d catbot/.git ]',
     cwd     => $home,
     user    => 'catbot',
-    require => [Class['git'], File[$ssh_key], File[$ssh_known_hosts]],
+    require => [Class['git'], File[$ssh_known_hosts]],
   }
 
   exec { 'Update catbot repo':
