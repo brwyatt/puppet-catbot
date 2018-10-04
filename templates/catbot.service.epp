@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User=catbot
 WorkingDirectory=<%= $catbot::install::home %>
-ExecStart=<%= $catbot::install::home %>/env/bin/catbot "<%= $catbot::config::config_file %>"<% if $catbot::config::debug { %> -d<% } %><% if $catbot::config::verbose { %> -v<% } %>
+ExecStart=<%= $catbot::install::home %>/env/bin/catbot<% if $catbot::config::debug { %> -d<% } %><% if $catbot::config::verbose { %> -v<% } %>
 Restart=on-failure
 
 [Install]
