@@ -6,7 +6,7 @@
 #   include catbot::install
 class catbot::install (
   String $home = '/opt/catbot',
-  String $git_repo = 'git@github.com:brwyatt/catbot.git',
+  String $git_repo = 'https://github.com/brwyatt/catbot.git',
   String $git_branch = 'master',
   Optional[String] $git_deploy_key = undef,
 ){
