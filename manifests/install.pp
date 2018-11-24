@@ -83,11 +83,13 @@ class catbot::install (
     require => Exec['Clone catbot repo'],
   }
 
+  $venv_version = split($python_version, '[.]')[0]
+
   python::pyvenv { $venv_dir:
     ensure  => present,
     version => $python_version,
     owner   => 'catbot',
-    require => [Exec['apt_update'], Package["python${python_version}-venv"]],
+    require => [Exec['apt_update'], Package["python${venv_version}-venv"]],
   }
 
   exec { 'Install Catbot':
