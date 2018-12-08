@@ -65,22 +65,14 @@ class catbot::install (
     # lint:endignore
   }
 
-  exec { 'Clone catbot repo':
-    command => "git clone '${git_repo}' catbot",
-    unless  => '[ -d catbot/.git ]',
-    cwd     => $home,
-    user    => 'catbot',
-    require => [Class['git'], File[$ssh_known_hosts]],
-  }
-
-  exec { 'Update catbot repo':
-    # lint:ignore:80chars lint:ignore:140chars
-    command => "bash -c 'git clean -dfx && git checkout \"${git_branch}\" && git reset --hard \"origin/${git_branch}\" && git clean -dfx'",
-    unless  => "bash -c 'git fetch && git status | grep \"On branch ${git_branch}\" && git status | grep -e \"Your branch is up[ -]to[ -]date with \"'",
-    # lint:endignore
-    cwd     => "${home}/catbot",
-    user    => 'catbot',
-    require => Exec['Clone catbot repo'],
+  vcsrepo { 'catbot':
+    ensure   => latest,
+    path     => "${home}/catbot",
+    provider => git,
+    owner    => 'catbot',
+    source   => $git_repo,
+    revision => $git_branch,
+    require  => [Class['git'], File[$ssh_known_hosts]],
   }
 
   $venv_version = split($python_version, '[.]')[0]
@@ -97,8 +89,7 @@ class catbot::install (
     cwd         => $home,
     refreshonly => true,
     user        => 'catbot',
-    subscribe   => [Exec['Clone catbot repo'], Exec['Update catbot repo'],
-                    Python::Pyvenv[$venv_dir]],
+    subscribe   => [Vcsrepo['catbot'], Python::Pyvenv[$venv_dir]],
   }
 
   Exec['apt_update'] -> Class['python']
